@@ -100,7 +100,7 @@ digistuff.process_command = function (meta, data, msg)
 			end
 		end
 		if not msg.texture_name or type(msg.texture_name) ~= "string" then
-			return	
+			return
 		end
 		local field = {type="image",X=msg.X,Y=msg.Y,W=msg.W,H=msg.H,texture_name=minetest.formspec_escape(msg.texture_name)}
 		table.insert(data,field)
@@ -150,7 +150,7 @@ digistuff.process_command = function (meta, data, msg)
 			end
 		end
 		if not msg.label or type(msg.label) ~= "string" then
-			return	
+			return
 		end
 		local field = {type="label",X=msg.X,Y=msg.Y,label=minetest.formspec_escape(msg.label)}
 		table.insert(data,field)
@@ -161,7 +161,7 @@ digistuff.process_command = function (meta, data, msg)
 			end
 		end
 		if not msg.label or type(msg.label) ~= "string" then
-			return	
+			return
 		end
 		local field = {type="vertlabel",X=msg.X,Y=msg.Y,label=minetest.formspec_escape(msg.label)}
 		table.insert(data,field)
@@ -396,7 +396,7 @@ minetest.register_node("digistuff:button", {
 		{ -4/16, -2/16, 4/16, 4/16, 2/16, 6/16 }	-- the button itself
 	}
 	},
-	digiline = 
+	digiline =
 	{
 		receptor = {}
 	},
@@ -446,7 +446,7 @@ minetest.register_node("digistuff:button_off", {
 		{ -4/16, -2/16, 4/16, 4/16, 2/16, 6/16 }	-- the button itself
 	}
 	},
-	digiline = 
+	digiline =
 	{
 		receptor = {}
 	},
@@ -458,7 +458,7 @@ minetest.register_node("digistuff:button_off", {
 		digiline:receptor_send(pos, digiline.rules.default, meta:get_string("channel"), meta:get_string("msg"))
 		minetest.swap_node(pos, {name = "digistuff:button_on", param2=node.param2})
 		if minetest.get_modpath("mesecons") then minetest.sound_play("mesecons_button_push", {pos=pos}) end
-		minetest.after(0.5, digistuff.button_turnoff, pos)
+		minetest.get_node_timer(pos):start(0.5)
 	end,
 	sounds = default.node_sound_stone_defaults(),
 })
@@ -490,7 +490,7 @@ minetest.register_node("digistuff:button_on", {
 		{ -4/16, -2/16, 11/32, 4/16, 2/16, 6/16 }
 	}
     	},
-	digiline = 
+	digiline =
 	{
 		receptor = {}
 	},
@@ -503,6 +503,7 @@ minetest.register_node("digistuff:button_on", {
 	end,
 	description = "Digilines Button (on state - you hacker you!)",
 	sounds = default.node_sound_stone_defaults(),
+	on_timer = digistuff.button_turnoff,
 })
 
 minetest.register_craft({
@@ -532,7 +533,7 @@ minetest.register_node("digistuff:detector", {
 	tiles = {
 	"digistuff_digidetector.png"
 	},
-	digiline = 
+	digiline =
 	{
 		receptor = {}
 	},
@@ -609,7 +610,7 @@ minetest.register_node("digistuff:panel", {
 		}
     	},
 	on_receive_fields = digistuff.panel_on_receive_fields,
-	digiline = 
+	digiline =
 	{
 		receptor = {},
 		effector = {
@@ -669,7 +670,7 @@ minetest.register_node("digistuff:touchscreen", {
 		}
     	},
 	on_receive_fields = digistuff.ts_on_receive_fields,
-	digiline = 
+	digiline =
 	{
 		receptor = {},
 		effector = {
@@ -709,7 +710,7 @@ minetest.register_node("digistuff:piezo", {
 		local meta = minetest.get_meta(pos)
 		if fields.channel then meta:set_string("channel",fields.channel) end
 	end,
-	digiline = 
+	digiline =
 	{
 		receptor = {},
 		effector = {
@@ -801,7 +802,7 @@ if http then
 			local meta = minetest.get_meta(pos)
 			if fields.channel then meta:set_string("channel",fields.channel) end
 		end,
-		digiline = 
+		digiline =
 		{
 			receptor = {},
 			effector = {
@@ -839,7 +840,7 @@ minetest.register_node("digistuff:camera", {
 		"digistuff_camera_back.png",
 		"digistuff_camera_front.png",
 	},
-	digiline = 
+	digiline =
 	{
 		receptor = {}
 	},
