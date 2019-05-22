@@ -32,7 +32,7 @@ minetest.register_node("digistuff:button", {
 		{ -4/16, -2/16, 4/16, 4/16, 2/16, 6/16 }	-- the button itself
 	}
 	},
-	digiline = 
+	digiline =
 	{
 		receptor = {}
 	},
@@ -82,7 +82,7 @@ minetest.register_node("digistuff:button_off", {
 		{ -4/16, -2/16, 4/16, 4/16, 2/16, 6/16 }	-- the button itself
 	}
 	},
-	digiline = 
+	digiline =
 	{
 		receptor = {}
 	},
@@ -94,7 +94,7 @@ minetest.register_node("digistuff:button_off", {
 		digiline:receptor_send(pos, digiline.rules.default, meta:get_string("channel"), meta:get_string("msg"))
 		minetest.swap_node(pos, {name = "digistuff:button_on", param2=node.param2})
 		if minetest.get_modpath("mesecons") then minetest.sound_play("mesecons_button_push", {pos=pos}) end
-		minetest.after(0.5, digistuff.button_turnoff, pos)
+		minetest.get_node_timer(pos):start(0.5)
 	end,
 	sounds = default and default.node_sound_stone_defaults(),
 })
@@ -126,7 +126,7 @@ minetest.register_node("digistuff:button_on", {
 		{ -4/16, -2/16, 11/32, 4/16, 2/16, 6/16 }
 	}
     	},
-	digiline = 
+	digiline =
 	{
 		receptor = {}
 	},
@@ -136,7 +136,9 @@ minetest.register_node("digistuff:button_on", {
 		local meta = minetest.get_meta(pos)
 		digiline:receptor_send(pos, digiline.rules.default, meta:get_string("channel"), meta:get_string("msg"))
 		if minetest.get_modpath("mesecons") then minetest.sound_play("mesecons_button_push", {pos=pos}) end
+		minetest.get_node_timer(pos):start(0.5)
 	end,
+	on_timer = digistuff.button_turnoff,
 	description = "Digilines Button (on state - you hacker you!)",
 	sounds = default and default.node_sound_stone_defaults(),
 })
